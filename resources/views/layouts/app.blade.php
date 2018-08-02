@@ -11,7 +11,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/app.css')}}" rel="stylesheet">
+<link href="{{ asset('/css/jquery.dataTables.css')}}" rel="stylesheet">
+<link href="{{ asset('/css/dataTables.bootstrap.css')}}" rel="stylesheet">
+
+
+
+
     <!-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> -->
 </head>
 <body>
@@ -40,6 +46,14 @@
 @if (Auth::check())
 <li><a href="{{ url('/home') }}">Dashboard</a></li>
 @endif
+@role('admin')
+<li><a href="{{ route('authors.index') }}">Penulis</a></li>
+<li><a href="{{ route('books.index') }}">Buku</a></li>
+<li><a href="{{ route('members.index') }}">Member</a></li>
+@endrole
+@if (auth()->check())
+<li><a href="{{ url('/settings/profile') }}">Profil</a></li>
+@endif
 </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -49,6 +63,7 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -56,11 +71,14 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
+                                        <ul class="nav navbar-nav">
+
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
@@ -73,11 +91,20 @@
                 </div>
             </div>
         </nav>
-
-        @yield('content')
+        
+            @include('layouts._flash')
+            @yield('content')
+        
     </div>
 
-    <!-- Scripts -->
+    <link href="/css/selectize.css" rel="stylesheet">  
+    <link href="/css/selectize.bootstrap3.css" rel="stylesheet">
+    <script src="/js/selectize.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="/js/custom.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    @yield('scripts')
 </body>
 </html>
